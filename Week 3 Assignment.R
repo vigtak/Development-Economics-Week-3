@@ -83,4 +83,36 @@ all_results <- bind_rows(national_table, area_table, region_table)
 
 kable(all_results)
 
+#3
+
+#Stratum-level contribution to national headcount rate
+stratum_contribution <- tzdata %>%
+  group_by(year, STRATUM) %>%
+  summarise(
+    poor_standard = sum((cons < povline) * hhweight * hhsize),
+    poor_food = sum((cons < food_povline) * hhweight * hhsize)
+  ) %>%
+  group_by(year) %>%
+  mutate(
+    contribution_standard = poor_standard / sum(poor_standard) * 100,
+    contribution_food = poor_food / sum(poor_food) * 100
+  ) %>%
+  select(year, STRATUM, contribution_standard, contribution_food)
+
+kable(stratum_contribution)
+#Region-level contribution to national headcount rate
+region_contribution <- tzdata %>%
+  group_by(year, region) %>%
+  summarise(
+    poor_standard = sum((cons < povline) * hhweight * hhsize),
+    poor_food = sum((cons < food_povline) * hhweight * hhsize)
+  ) %>%
+  group_by(year) %>%
+  mutate(
+    contribution_standard = poor_standard / sum(poor_standard) * 100,
+    contribution_food = poor_food / sum(poor_food) * 100
+  ) %>%
+  select(year, region, contribution_standard, contribution_food)
+
+kable(region_contribution)
   
