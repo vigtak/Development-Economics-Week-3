@@ -37,25 +37,40 @@ tzdesign <- svydesign(
 #Calculations of the standard and the poverty line
 tzdata <- bind_rows(tzdata2012, tzdata2018)
 
+# National
 national <- tzdata %>%
   group_by(year) %>%
   summarise(
     headcount_standard = weighted.mean(cons < povline, hhweight * hhsize) * 100,
-    headcount_food = weighted.mean(cons < food_povline, hhweight * hhsize) * 100
+    poverty_gap_standard = weighted.mean(pmax(0, (povline - cons) / povline), hhweight * hhsize) * 100,
+    sq_poverty_gap_standard = weighted.mean(pmax(0, (povline - cons) / povline)^2, hhweight * hhsize) * 100,
+    headcount_food = weighted.mean(cons < food_povline, hhweight * hhsize) * 100,
+    poverty_gap_food = weighted.mean(pmax(0, (food_povline - cons) / food_povline), hhweight * hhsize) * 100,
+    sq_poverty_gap_food = weighted.mean(pmax(0, (food_povline - cons) / food_povline)^2, hhweight * hhsize) * 100
   )
 
+# Area
 area <- tzdata %>%
   group_by(year, STRATUM) %>%
   summarise(
     headcount_standard = weighted.mean(cons < povline, hhweight * hhsize) * 100,
-    headcount_food = weighted.mean(cons < food_povline, hhweight * hhsize) * 100
+    poverty_gap_standard = weighted.mean(pmax(0, (povline - cons) / povline), hhweight * hhsize) * 100,
+    sq_poverty_gap_standard = weighted.mean(pmax(0, (povline - cons) / povline)^2, hhweight * hhsize) * 100,
+    headcount_food = weighted.mean(cons < food_povline, hhweight * hhsize) * 100,
+    poverty_gap_food = weighted.mean(pmax(0, (food_povline - cons) / food_povline), hhweight * hhsize) * 100,
+    sq_poverty_gap_food = weighted.mean(pmax(0, (food_povline - cons) / food_povline)^2, hhweight * hhsize) * 100
   )
 
+# Region
 region <- tzdata %>% 
   group_by(year, region) %>% 
   summarise(
     headcount_standard = weighted.mean(cons < povline, hhweight * hhsize) * 100,
-    headcount_food = weighted.mean(cons < food_povline, hhweight * hhsize) * 100
+    poverty_gap_standard = weighted.mean(pmax(0, (povline - cons) / povline), hhweight * hhsize) * 100,
+    sq_poverty_gap_standard = weighted.mean(pmax(0, (povline - cons) / povline)^2, hhweight * hhsize) * 100,
+    headcount_food = weighted.mean(cons < food_povline, hhweight * hhsize) * 100,
+    poverty_gap_food = weighted.mean(pmax(0, (food_povline - cons) / food_povline), hhweight * hhsize) * 100,
+    sq_poverty_gap_food = weighted.mean(pmax(0, (food_povline - cons) / food_povline)^2, hhweight * hhsize) * 100
   )
 
 
