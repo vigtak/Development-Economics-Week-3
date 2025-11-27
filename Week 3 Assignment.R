@@ -81,6 +81,7 @@ region_table <- region %>% mutate(Level = "Region", Category = region) %>% selec
 
 all_results <- bind_rows(national_table, area_table, region_table)
 
+kable(area_table)
 kable(all_results)
 
 #3
