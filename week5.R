@@ -42,10 +42,6 @@ data <- read_csv(file = "monocentric_2016.csv")
 # onze code
 ############################################################
 
-#renaming col names
-colnames(monocentric_2016) <- as.character(unlist(monocentric_2016[1, ]))
-monocentric_2016 <- monocentric_2016[-1, ]
-
 # selecting only municipality Nijmegen 
 data <- monocentric_2016 %>%
   filter(munname == "Nijmegen") 
@@ -71,7 +67,6 @@ plot_model(model_1, type = "pred", terms = c("hhsize"))
 # Create new variable for Leeuwarden dummy
 data$leeuwarden <- data$munname == "Leeuwarden"
 data$leeuwarden <- as.factor(data$leeuwarden) # coerce into factor
-
 # Regression with interaction terms
 model_2 <- lm(pricem2 ~ hhsize + leeuwarden + hhsize:leeuwarden, data = data)
 summary(model_2)
@@ -101,3 +96,14 @@ abline(coef = c(coef_m2[1], coef_m2[2]),
 abline(coef = c(coef_m2[1] + coef_m2[3], coef_m2[2] + coef_m2[4]), 
        col = "purple",
        lwd = 2)
+
+#1.3
+
+monocentric_2016_2 <- read_csv(file = "monocentric_2016") %>%
+  mutate(pricem2 = as.numeric(pricem2),
+         distcbd = as.numeric(distcbd),
+         hhsize = as.numeric(hhsize),
+         popdens = as.numeric(popdens),
+         shhistdistr = as.numeric(shhistdistr))
+model_3 <- lm(pricem2 ~ distcbd, data=data)
+summary(model_3)
