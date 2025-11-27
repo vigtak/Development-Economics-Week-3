@@ -100,6 +100,7 @@ stratum_contribution <- tzdata %>%
   select(year, STRATUM, contribution_standard, contribution_food)
 
 kable(stratum_contribution)
+
 #Region-level contribution to national headcount rate
 region_contribution <- tzdata %>%
   group_by(year, region) %>%
